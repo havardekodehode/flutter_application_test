@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = GeneratorPage();
         break;
       case 1:
-        page = Placeholder();
+        page = FavoritesPage();
         break;
       default:
         throw UnimplementedError('No widget for $selectedIndex');
@@ -170,5 +170,80 @@ class BigCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class FavoritesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final style = theme.textTheme.displayMedium!
+        .copyWith(color: theme.colorScheme.onPrimary);
+    var appState = context.watch<MyAppState>();
+
+    return Scaffold(
+      body: appState.favorites.isEmpty
+          ? Center(child: Text('No favorites yet.'))
+          : Column(
+              children: [
+                Text(
+                  'You have ${appState.favorites.length} favorites',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: appState.favorites.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                          leading: Icon(Icons.favorite),
+                          title: Text('${appState.favorites[index]}'));
+                    },
+                  ),
+                ),
+              ],
+            ),
+    );
+    // body: appState.favorites.isEmpty
+    //     ? Center(child: Text('No favorites yet.'))
+    //     : ListView.builder(
+    //         itemCount: appState.favorites.length,
+    //         itemBuilder: (BuildContext context, int index) {
+    //           return ListTile(title: Text('${appState.favorites[index]}'));
+    //         }));
+
+    // return ListView(
+    //   children: [
+    //     Padding(
+    //       padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+    //       child: Text('You have ${appState.favorites.length} favorites'),
+    //     ),
+    //     ...appState.favorites.map(
+    //       (pair) => ListTile(
+    //           leading: Icon(Icons.favorite), title: Text(pair.asLowerCase)),
+    //     )
+    //   ],
+    // );
+
+    // return Column(
+    //   children: [
+    //     appState.favorites.isEmpty
+    //         ? Center(child: Text('No favorites yet.'))
+    //         : Column(
+    //             children: [
+    //               Text('${appState.favorites.length} favorites: '),
+    //               ...appState.favorites.map((fav) => Card(
+    //                   color: theme.colorScheme.primary,
+    //                   child: Padding(
+    //                       padding: const EdgeInsets.all(10),
+    //                       child: Text(style: style, fav.asString))))
+    //             ],
+    //           ),
+    //   ],
+    // );
+
+    // var favorites = appState.favorites;
   }
 }
